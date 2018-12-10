@@ -1,14 +1,14 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: __dirname + "/src/index.js",
+  entry: __dirname + '/src/index.js',
   output: {
-    path: __dirname + "/dist"
+    path: __dirname + '/dist',
   },
   resolve: {
-    extensions: [".js", ".jsx"]
+    extensions: ['.js', '.jsx'],
   },
   module: {
     rules: [
@@ -17,24 +17,24 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: "babel-loader"
+            loader: 'babel-loader',
           },
           {
-            loader: "linaria/loader",
+            loader: 'linaria/loader',
             options: {
-              sourceMap: process.env.NODE_ENV !== "production"
-            }
-          }
-        ]
+              sourceMap: process.env.NODE_ENV !== 'production',
+            },
+          },
+        ],
       },
       {
         test: /\.css$/,
         use: [
           // [
           // { loader: "css-hot-loader" },
-          "css-hot-loader",
+          'css-hot-loader',
           MiniCssExtractPlugin.loader,
-          "css-loader"
+          'css-loader',
           // {
           //   loader: "css-loader",
           //   options: {
@@ -43,23 +43,24 @@ module.exports = {
           // }
           // ],
           // MiniCssExtractPlugin.loader,
-        ]
-      }
-    ]
+        ],
+      },
+    ],
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./static/index.html",
-      filename: "./index.html"
+      template: './static/index.html',
+      filename: './index.html',
     }),
     new MiniCssExtractPlugin({
-      filename: "styles.css"
-    })
+      filename: 'styles.css',
+    }),
   ],
+  devtool: 'source-map',
   devServer: {
     hot: true,
-    contentBase: path.join(__dirname, "dist"),
+    contentBase: path.join(__dirname, 'dist'),
     compress: false,
-    port: 1234
-  }
+    port: 1234,
+  },
 };
