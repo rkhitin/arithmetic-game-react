@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from 'react';
+import { object, func } from 'prop-types';
 
-const Answers = ({ answers, onAnswer }) => {
+const Answers = ({ answers, handleAnswer }) => {
   const [answerdIndex, setAnswerdIndex] = useState(null);
-  useEffect(
-    () => {
-      setAnswerdIndex(null);
-    },
-    [answers]
-  );
 
-  const handleAnswer = index => {
+  useEffect(setAnswerdIndex.bind(null, null), [answers]);
+
+  const handleAnswerWithTimeout = index => {
     setAnswerdIndex(index);
 
-    setTimeout(onAnswer.bind(null, index), 1000);
+    setTimeout(handleAnswer.bind(null, index), 1000);
   };
 
   const getButtonAdditionalClass = itemIndex => {
@@ -21,17 +18,20 @@ const Answers = ({ answers, onAnswer }) => {
     return answers.rightAnswerIndex === itemIndex ? 'btn-success' : 'btn-danger';
   };
 
-  console.log(answerdIndex);
-
   return (
     <div className="row">
       {answers.items.map((answer, index) => (
-        <div key={index} onClick={handleAnswer.bind(null, index)} className="col sm-6">
+        <div key={index} onClick={handleAnswerWithTimeout.bind(null, index)} className="col sm-6">
           <button className={`btn-block ${getButtonAdditionalClass(index)}`}>{answer}</button>
         </div>
       ))}
     </div>
   );
+};
+
+Answers.propTypes = {
+  answers: object,
+  handleAnswer: func,
 };
 
 export default Answers;

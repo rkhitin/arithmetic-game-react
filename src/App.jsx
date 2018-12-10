@@ -2,43 +2,52 @@ import React, { useState } from 'react';
 
 import 'papercss/dist/paper.min.css';
 
-import Answers from './Answers';
-import { generateTask } from './libs';
+import Welcome from './Welcome';
+import Question from './Question';
+import QuestionHeader from './QuestionHeader';
+
+let intervalId = null;
 
 const initState = {
-  level: 1,
-  rightAnserCount: 0,
+  level: 0,
+  time: 10,
 };
 
 const App = () => {
   const [level, setLevel] = useState(initState.level);
-  const [rightAnserCount, setRightAnswerCount] = useState(initState.rightAnserCount);
+  const [timeCounter, setTimeCounter] = useState(0);
 
-  const task = generateTask(level);
+  const initTimer = () => {
+    setTimeCounter(prevTimeCounter => initState.time + prevTimeCounter);
 
-  const onAnswer = answerIndex => {
-    if (answerIndex === task.answers.rightAnswerIndex) {
-      setRightAnswerCount(rightAnserCount + 1);
-    } else {
-      setRightAnswerCount(rightAnserCount - 1);
-    }
+    clearInterval(intervalId);
 
+    intervalId = setInterval(() => {
+      setTimeCounter(prevTimeCounter => prevTimeCounter - 1);
+    }, 1000);
+  };
+
+  const start = () => {
+    initTimer();
+    setLevel(1);
+  };
+
+  const handleAnswer = ({ isAnswerRight } = {}) => {
     setLevel(level + 1);
+
+    if (isAnswerRight) initTimer();
   };
 
   return (
     <div className="paper container">
-      <div className="row flex-center">
-        <h3>
-          ({level}) Hello <span className="badge secondary">{rightAnserCount}</span>
-        </h3>
-      </div>
-      <div className="row flex-center">
-        <pre>
-          <code>{task.question}</code>
-        </pre>
-      </div>
-      <Answers answers={task.answers} onAnswer={onAnswer} />
+      {level > 0 ? (
+        <>
+          <QuestionHeader level={level} timeCounter={timeCounter} />
+          <Question level={level} handleAnswer={handleAnswer} />
+        </>
+      ) : (
+        <Welcome start={start} />
+      )}
     </div>
   );
 };
