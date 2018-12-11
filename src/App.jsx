@@ -34,6 +34,8 @@ const App = () => {
   };
 
   const handleAnswer = ({ isAnswerRight } = {}) => {
+    if (!timeCounter) return;
+
     setLevel(level + 1);
 
     if (isAnswerRight) initTimer();

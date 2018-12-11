@@ -19,7 +19,7 @@ const getBadgeClassName = timeCounter => {
 const QuestionHeader = ({ timeCounter, level }) => {
   return (
     <div className="row flex-center">
-      <h3>
+      <h3 style={{ textAlign: 'center' }}>
         Уровень: {level}.
         <br />
         Осталось времени: <span className={`badge ${getBadgeClassName(timeCounter)}`}>{prettifyTime(timeCounter)}</span>
