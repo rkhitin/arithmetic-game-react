@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import 'papercss/dist/paper.min.css';
 
 import Welcome from './Welcome';
+import Result from './Result';
 import Question from './Question';
 import QuestionHeader from './QuestionHeader';
 
@@ -38,18 +39,23 @@ const App = () => {
     if (isAnswerRight) initTimer();
   };
 
-  return (
-    <div className="paper container">
-      {level > 0 ? (
-        <>
-          <QuestionHeader level={level} timeCounter={timeCounter} />
-          <Question level={level} handleAnswer={handleAnswer} />
-        </>
-      ) : (
-        <Welcome start={start} />
-      )}
-    </div>
-  );
+  const renderContent = () => {
+    switch (true) {
+      case level === 0:
+        return <Welcome start={start} />;
+      case level > 0 && timeCounter !== 0:
+        return (
+          <>
+            <QuestionHeader level={level} timeCounter={timeCounter} />
+            <Question level={level} handleAnswer={handleAnswer} />
+          </>
+        );
+      default:
+        return <Result level={level} start={start} />;
+    }
+  };
+
+  return <div className="paper container">{renderContent()}</div>;
 };
 
 export default App;
